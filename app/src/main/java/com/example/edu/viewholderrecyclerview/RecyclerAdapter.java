@@ -16,10 +16,31 @@ import java.util.HashMap;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     ArrayList<HashMap<String,Object>> arrayList=null;
-    public RecyclerAdapter(ArrayList<HashMap<String,Object>>arrayList){
+    private SQLiteDatabase mdb;
+
+    public RecyclerAdapter(SQLiteDatabase db){
+        this.mdb = db;
+        String query=new StringBuilder().append("select * frome myorder ").toString();
+        Cursor cursor=mdb.rawQuery(query,null);
+        ArrayList<HashMap<String, Object>>arrayListTemp = new ArrayList<>();
+        HashMap<String, Object> hashMap = null;
+        while (cursor.moveToNext()){
+            hashMap = new HashMap<String, Object>();
+            hashMap.put("itemTile",cursor.getString(0));
+            hashMap.put("itemdetail", cursor.getString(1));
+            arrayListTemp.add(hashMap);
+        }
+        this.arrayList=arrayListTemp;
+    }
+
+    /*public RecyclerAdapter(ArrayList<HashMap<String,Object>>arrayList){
         this.arrayList=new ArrayList<HashMap<String,Object>>();
         this.arrayList=arrayList;
-    }
+    }*/
+    /*public void addItem(int position HashMap<String, Object> hashmap){
+        this.arrayList.add(hashMap);
+        notifyItemInserted(position);
+    }연쌤꺼-hashmap에 빨간줄. 왤까?*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -68,50 +89,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public int getItemCount() {
         return arrayList.size();
     }
-    private SQLiteDatabase mdb;
-    public RecyclerAdapter(SQLiteDatabase db){
-        this.mdb = db;
-        String query=new StringBuilder().append("select*frome ").toString();
-        Cursor cursor=mdb.rawQuery(query,null);
-        ArrayList<HashMap<String, Object>>arrayListTemp = new ArrayList<>();
-        HashMap<String, Object> hashMap = null;
-        while (cursor.moveToNext()){
-            hashMap = new HashMap<String, Object>();
-            hashMap.put("itemTile",cursor.getString(0));
-            hashMap.put("title","Chapter One" );
-            hashMap.put("detail","Item one details");
-            hashMap.put("image",R.drawable.android_image_1);
-            arrayList.add(hashMap);
 
-            hashMap = new HashMap<String, Object>();
-            hashMap.put("itemTile",cursor.getString(0));
-            hashMap.put("title","Chapter Two" );
-            hashMap.put("detail","Item one details");
-            hashMap.put("image",R.drawable.android_image_2);
-            arrayList.add(hashMap);
 
-            hashMap = new HashMap<String, Object>();
-            hashMap.put("itemTile",cursor.getString(0));
-            hashMap.put("title","Chapter Three" );
-            hashMap.put("detail","Item one details");
-            hashMap.put("image",R.drawable.android_image_3);
-            arrayList.add(hashMap);
-
-            hashMap = new HashMap<String, Object>();
-            hashMap.put("itemTile",cursor.getString(0));
-            hashMap.put("title","Chapter Four" );
-            hashMap.put("detail","Item one details");
-            hashMap.put("image",R.drawable.android_image_4);
-            arrayList.add(hashMap);
-
-            hashMap = new HashMap<String, Object>();
-            hashMap.put("itemTile",cursor.getString(0));
-            hashMap.put("title","Chapter Five" );
-            hashMap.put("detail","Item one details");
-            hashMap.put("image",R.drawable.android_image_5);
-            arrayList.add(hashMap);
-        }
-        this.arrayList=arrayListTemp;
-    }
 
 }

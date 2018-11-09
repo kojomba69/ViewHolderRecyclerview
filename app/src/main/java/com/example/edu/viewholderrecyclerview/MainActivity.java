@@ -1,6 +1,7 @@
 package com.example.edu.viewholderrecyclerview;
 
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,11 +16,18 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerAdapter adapter;
+    SQLiteDatabase mdb;
+    SQLiteOrder dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHelper = new SQLiteOrder(this);
+        mdb = dbHelper.getWritableDatabases();
+        adapter = new RecyclerAdapter(mdb);
 
         ArrayList<HashMap<String,Object>> arrayList = new ArrayList<HashMap<String, Object>>();
         HashMap<String,Object> hashMap = null;
@@ -89,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);;
         adapter = new RecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
-
-        adapter = new RecyclerAdapter(db);
 
     }
 }
